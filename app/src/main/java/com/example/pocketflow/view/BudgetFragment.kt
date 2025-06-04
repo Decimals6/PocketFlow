@@ -42,6 +42,7 @@ class BudgetFragment : Fragment() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         budgetViewModel = ViewModelProvider(this)[BudgetViewModel::class.java]
         sharedPref = SharedPref(requireContext())
+
         val idUser = sharedPref.getUserId()
 
         budgetViewModel.getAllBudget(idUser)

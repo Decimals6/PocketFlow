@@ -5,11 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pocketflow.R
+import com.example.pocketflow.databinding.FragmentBudgetBinding
+import com.example.pocketflow.databinding.FragmentExpensesBinding
+import com.example.pocketflow.model.SharedPref
+import com.example.pocketflow.viewmodel.BudgetViewModel
+import com.example.pocketflow.viewmodel.ExpensesViewModel
+import com.example.pocketflow.viewmodel.UserViewModel
 
 
 class ExpensesFragment : Fragment() {
-
+    private lateinit var binding : FragmentExpensesBinding
+    private lateinit var expensesViewModel: ExpensesViewModel
+    private val expensesListAdapter  = ExpensesAdapter(arrayListOf())
+    private lateinit var sharedPref: SharedPref
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +35,38 @@ class ExpensesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_expenses, container, false)
+        binding = FragmentExpensesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        expensesViewModel = ViewModelProvider(this)[ExpensesViewModel::class.java]
+        sharedPref = SharedPref(requireContext())
+
+        val idUser = sharedPref.getUserId()
+
+        expensesViewModel.getAllExpenses(idUser)
+
+        binding.recExpenses.layoutManager = LinearLayoutManager(context)
+        binding.recExpenses.adapter = expensesListAdapter
+
+        binding.btnAddExpense.setOnClickListener {
+            val action = ExpensesFragmentDirections.actionToAddExpenses()
+            Navigation.findNavController(it).navigate(action)
+        }
+        observeViewModel()
+    }
+
+    fun observeViewModel() {
+        expensesViewModel.dataExpenses.observe(viewLifecycleOwner, Observer {
+            expensesListAdapter.updateListBudget(it)
+            if (it.isEmpty()) {
+                binding.recExpenses?.visibility = View.GONE
+            } else {
+                binding.recExpenses?.visibility = View.VISIBLE
+            }
+        })
     }
 
     companion object {

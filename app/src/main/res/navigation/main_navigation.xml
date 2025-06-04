@@ -9,7 +9,11 @@
         android:id="@+id/expensesFragment"
         android:name="com.example.pocketflow.view.ExpensesFragment"
         android:label="ExpensesFragment"
-        tools:layout="@layout/fragment_expenses"/>
+        tools:layout="@layout/fragment_expenses">
+        <action
+            android:id="@+id/action_to_addExpenses"
+            app:destination="@id/addExpensesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/budgetFragment"
         android:name="com.example.pocketflow.view.BudgetFragment"
@@ -46,4 +50,9 @@
             android:name="id"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/addExpensesFragment"
+        android:name="com.example.pocketflow.view.AddExpensesFragment"
+        android:label="AddExpensesFragment"
+        tools:layout="@layout/fragment_add_expenses"/>
 </navigation>
