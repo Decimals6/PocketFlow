@@ -45,12 +45,12 @@ class ProfileFragment : Fragment() {
         userViewModel.getUserData(idUser)
         observeViewModel()
 
-        binding.btnLogout.setOnClickListener {
-            sharedPref.logout()
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
-        }
+//        binding.btnLogout.setOnClickListener {
+//            sharedPref.logout()
+//            val intent = Intent(requireActivity(), LoginActivity::class.java)
+//            startActivity(intent)
+//            requireActivity().finish()
+//        }
 
     }
     fun observeViewModel(){

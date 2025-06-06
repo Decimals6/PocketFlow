@@ -23,7 +23,7 @@ interface DaoExpenses {
     fun getExpensesWithBudget(userId: Int): List<ExpensesWithBudget>
 
     @Transaction
-    @Query("SELECT * FROM Expenses WHERE id = :pid")
+    @Query("SELECT * FROM Expenses WHERE id = :pid  ORDER BY date DESC")
     fun getSelectedExpenses(pid: Int): ExpensesWithBudget
 
     @Transaction
